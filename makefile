@@ -24,8 +24,6 @@ OBJ = consoleconnectfour.o connectfour.o
 consoleconnectfour: $(OBJ)
 	@echo Linking
 	$(CC) $(CFLAGS) -o $@ $(OBJ)
-	@echo Cleaning
-	make clean
 
 .c.o:
 	@echo Compiling $@
