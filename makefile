@@ -2,6 +2,7 @@
 ### add their flags here (-lm in our case) in the "LIBS" variable.
 
 ###
+.POSIX:
 
 CFLAGS  = -std=c99
 CFLAGS += -g
@@ -15,22 +16,20 @@ ASANFLAGS  = -fsanitize=address
 ASANFLAGS += -fno-common
 ASANFLAGS += -fno-omit-frame-pointer
 
-.PHONY: cc4
-cc4: consoleconnectfour.o
-	@./consoleconnectfour.o
-	@echo "Console Connect Four Successfully Compiled."
+OBJ = consoleconnectfour.o connectfour.o
 
-.PHONY: memcc4
-memcc4: ./*.c ./*.h
+.SUFFIXES:
+.SUFFIXES: .c .o
+
+consoleconnectfour: $(OBJ)
+	@echo Linking
+	$(CC) $(CFLAGS) -o $@ $(OBJ)
+	@echo Cleaning
+	make clean
+
+.c.o:
 	@echo Compiling $@
-	@$(CC) $(ASANFLAGS) $(CFLAGS) ./*.c -o mem_consoleconnectfour.o $(LIBS)
-	@./mem_consoleconnectfour.o
-	@echo "Memory check passed"
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-.PHONY: clean
 clean:
 	rm -rf *.o
-
-consoleconnectfour.o: ./*.c ./*.h
-	@echo Compiling $@
-	@$(CC) $(CFLAGS) ./*.c -o consoleconnectfour.o $(LIBS)
